@@ -1,0 +1,35 @@
+name: DeepSeek Relay
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: deepseek-relay-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  respond:
+    if: >-
+      github.event.issue.pull_request == null &&
+      startsWith(github.event.issue.title, '[DeepSeek]') &&
+      github.event.issue.user.login == github.repository_owner &&
+      (github.event_name == 'issues' || github.event.comment.user.login == github.repository_owner)
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Check out relay
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run DeepSeek relay
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python3 scripts/relay.py
