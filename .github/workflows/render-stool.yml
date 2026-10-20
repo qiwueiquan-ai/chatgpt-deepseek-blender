@@ -1,0 +1,39 @@
+name: Render Stool v1
+on:
+  push:
+    branches: [main]
+    paths:
+      - scenes/stool_v1.py
+      - .github/workflows/render-stool.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render-stool:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Blender
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+          blender --version | head -2
+      - name: Model and render
+        env:
+          OUTPUT_DIR: ${{ runner.temp }}/stool_output
+        run: |
+          mkdir -p "$OUTPUT_DIR"
+          blender --background --python scenes/stool_v1.py
+          test -s "$OUTPUT_DIR/stool_v1.blend"
+          test -s "$OUTPUT_DIR/stool_v1_preview.png"
+      - name: Upload editable model and preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: stool-v1-model-preview
+          path: ${{ runner.temp }}/stool_output/
+          retention-days: 7
+          if-no-files-found: error
