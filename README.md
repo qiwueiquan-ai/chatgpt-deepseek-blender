@@ -94,3 +94,6 @@ SECURITY.md              # 安全注意事项
 
 ---
 **English quick note:** An experimental, self-hosted GitHub Issues → DeepSeek API relay, plus a reviewed Blender Python house example rendered by GitHub Actions. Bring your own DeepSeek API key. Model-generated code is **not** auto-executed. See the Chinese setup guide for installation.
+
+## ps
+自己搞着玩的
