@@ -1,0 +1,31 @@
+# Never commit credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Blender output / backups
+*.blend
+*.blend1
+*.blend2
+*.blend@
+*.blend-*
+*.exr
+*.render
+blender_output/
+outputs/
+artifacts/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
